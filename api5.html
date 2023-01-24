@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  
+      <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="api5.css">
+</head>
+<body>
+     <div class="row">
+        
+         <h1 style="text-align:center; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;" class=" m-5 text-primary">more about country</h1>
+         <div class="box">
+         <form  class=" mb-2 p-4 text-center" action="">
+            <input style="border-radius:30px ; padding: 8px; background-color: rgba(34, 34, 39, 0.03); font-size: 20px;" class="search" id="cInput"  placeholder="type country name to be searched" type="text"  name="country">
+            <br><br>
+
+            <button onclick="search()" type="button" class="m-3 btn btn-primary text-center">search</button>
+         </form>
+        </div>
+         <div id="result">
+
+         </div>
+         <div class="col-4"></div>
+
+            </div>
+            
+       
+</body>
+<script>
+   function search(){
+      let country = cInput.value
+      fetch(`https://restcountries.com/v2/name/${country}?fullText=true`)
+      .then((result)=>{
+         console.log(result);
+         result.json()
+         .then((data)=>{
+         populateData(data);
+      })
+      })
+
+   }
+    function populateData(data){
+      let country = data[0].name
+      let capital = data[0].capital
+      let population = data[0].population
+      let timezones = data[0].timezones
+      let currency = data[0].currencies[0].name
+      let symbol = data[0].currencies[0].name
+      let language = data[0].languages[0].name
+      let flag = data[0].flag
+
+      htmlData=`
+      <div class="card" style="width:90%;">
+  <img src="${flag}" class="card-img-top" alt="no flag">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">${country}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">capital: ${capital}</li>
+    <li class="list-group-item">population: ${population}</li>
+    <li class="list-group-item">timezones: ${timezones}</li>
+    <li class="list-group-item">currency: ${currency},${symbol}</li>
+    <li class="list-group-item">language: ${language}</li>
+    <li class="list-group-item">flag: ${flag}</li>
+  </ul>
+</div>
+      `
+    result.innerHTML = htmlData
+    }
+
+</script>
+</html>
